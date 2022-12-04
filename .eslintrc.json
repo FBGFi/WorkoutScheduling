@@ -13,7 +13,8 @@
         "@typescript-eslint/no-shadow": ["error"],
         "prettier/prettier": "error",
         "no-shadow": "off",
-        "no-undef": "off"
+        "no-undef": "off",
+        "react-native/no-inline-styles": "off"
       }
     }
   ]

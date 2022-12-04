@@ -41,15 +41,100 @@ const ExpandButton: React.FC<ExpandButtonProps> = ({
   );
 };
 
-const cardStyles = ReactNative.StyleSheet.create({
+const swipableButtonStyles = ReactNative.StyleSheet.create({
+  wrapper: {
+    flexDirection: "row",
+    width: ReactNative.Dimensions.get("window").width,
+    position: "absolute",
+  },
   container: {
+    flexDirection: "row",
+    width: ReactNative.Dimensions.get("window").width,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderWidth: 4,
     borderColor: Colors.secondary,
   },
+});
+
+interface SwipableButtonProps extends React.PropsWithChildren {
+  onPress: () => void;
+  onSwipeRight?: () => void;
+  onSwipeLeft?: () => void;
+  swipeDirection: "left" | "right";
+}
+
+const SwipableButton: React.FC<SwipableButtonProps> = ({
+  children,
+  onPress,
+  onSwipeRight,
+  onSwipeLeft,
+  swipeDirection,
+}) => {
+  const swiperRef = React.useRef<ReactNative.ScrollView | null>(null);
+
+  const onScrollEnd = (
+    e: ReactNative.NativeSyntheticEvent<ReactNative.NativeScrollEvent>,
+  ) => {
+    if (!swiperRef.current) return;
+    const xOffset = e.nativeEvent.contentOffset.x;
+    const screenWidth = ReactNative.Dimensions.get("window").width;
+    // Scroll to right
+    if (xOffset >= screenWidth * 0.3 || xOffset > screenWidth * 0.7) {
+      onSwipeRight && onSwipeRight();
+    } else {
+      swiperRef.current.scrollTo({ y: 0, x: 0, animated: true });
+    }
+  };
+
+  React.useEffect(() => {
+    if (swiperRef.current) {
+      swiperRef.current.scrollTo({
+        x: ReactNative.Dimensions.get("window").width * 2,
+        animated: false,
+      });
+    }
+  }, [swiperRef]);
+
+  return (
+    <ReactNative.View style={swipableButtonStyles.wrapper}>
+      <ReactNative.ScrollView
+        horizontal
+        disableIntervalMomentum={true}
+        showsHorizontalScrollIndicator={true}
+        decelerationRate={0.3}
+        ref={swiperRef}
+        onScrollEndDrag={onScrollEnd}
+        onMomentumScrollEnd={() => {}}
+        contentContainerStyle={{
+          width: ReactNative.Dimensions.get("window").width * 2,
+        }}>
+        <ReactNative.TouchableOpacity onPress={onPress}>
+          <ReactNative.View
+            style={{
+              ...swipableButtonStyles.container,
+              marginLeft:
+                swipeDirection === "right"
+                  ? ReactNative.Dimensions.get("window").width
+                  : 0,
+              marginRight:
+                swipeDirection === "left"
+                  ? ReactNative.Dimensions.get("window").width
+                  : 0,
+            }}>
+            {children}
+          </ReactNative.View>
+        </ReactNative.TouchableOpacity>
+      </ReactNative.ScrollView>
+    </ReactNative.View>
+  );
+};
+
+const cardStyles = ReactNative.StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    flexDirection: "row",
+    position: "relative",
+    // borderWidth: 4,
+    // borderColor: Colors.secondary,
   },
   collapsibleContainer: {
     borderTopWidth: 4,
@@ -74,35 +159,21 @@ interface CardProps extends React.PropsWithChildren {
 export const Card: React.FC<CardProps> = ({ children, title, id, onPress }) => {
   const [isCollapsed, setIsCollapsed] = React.useState(true);
 
-  const onPressIn = (e: any) => {
-    console.log("onPressIn", e);
-  };
-
-  const onPressOut = (e: any) => {
-    console.log("onPressOut", e);
-  };
-
-  const onLongPress = (e: any) => {
-    console.log("onLongPress", e);
-  };
-
   return (
-    <ReactNative.View style={cardStyles.container}>
+    <ReactNative.View style={cardStyles.wrapper}>
       {/* --- Start of button --- */}
-      <ReactNative.TouchableOpacity
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
-        onLongPress={onLongPress}>
-        <ReactNative.View style={cardStyles.wrapper}>
-          <ReactNative.Text style={cardStyles.title}>{title}</ReactNative.Text>
-          {children && (
-            <ExpandButton
-              onPress={() => setIsCollapsed(!isCollapsed)}
-              isCollapsed={isCollapsed}
-            />
-          )}
-        </ReactNative.View>
-      </ReactNative.TouchableOpacity>
+      <SwipableButton
+        swipeDirection="right"
+        onPress={() => onPress(id)}
+        onSwipeRight={() => console.log("swiperino")}>
+        <ReactNative.Text style={cardStyles.title}>{title}</ReactNative.Text>
+        {children && (
+          <ExpandButton
+            onPress={() => setIsCollapsed(!isCollapsed)}
+            isCollapsed={isCollapsed}
+          />
+        )}
+      </SwipableButton>
       {/* --- End of button --- */}
 
       {/* --- Start of collapsible container --- */}
