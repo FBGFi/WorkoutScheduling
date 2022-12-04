@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Staatliches-Regular.ttf",
+      "sha1": "e81d9f0c3109b0e7e84ccb5d35ee66f630f4dfd8"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Bold.ttf",
+      "sha1": "1de05d92173edf1cf44696d3c8a5842ebbf1e75f"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Italic.ttf",
+      "sha1": "1babc993e83c4853bf1fe7e75694efdd5b3df1de"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-Regular.ttf",
+      "sha1": "c1d91bd86751bd0a186ac0323dcf47de4d0c0981"
+    },
+    {
+      "path": "src/assets/fonts/TitilliumWeb-SemiBold.ttf",
+      "sha1": "3ec2a03e4f87634460200b350ba7fdb8cc37934f"
+    }
+  ]
+}
