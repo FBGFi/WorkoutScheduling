@@ -5,7 +5,6 @@ import Colors from "./styles/colors";
 
 const App = () => {
   const [cards, setCards] = React.useState(["1", "2", "3"]);
-  console.log(cards);
   return (
     <ReactNative.View
       style={{ backgroundColor: Colors.primary_background, flex: 1 }}>

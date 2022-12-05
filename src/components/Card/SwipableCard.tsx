@@ -78,14 +78,35 @@ const swipableCardStyles = ReactNative.StyleSheet.create({
 });
 
 interface SwipableCardProps extends React.PropsWithChildren {
+  /**
+   * Text displayed in the header
+   */
   title: string;
+  /**
+   * Id of the card passed in the callbacks
+   */
   id: string;
+  /**
+   * If used in a list, shift each card up according to their index
+   */
   index?: number;
+  /**
+   * On header press
+   */
   onPress?: (id: string) => void;
+  /**
+   * Swipe callback
+   */
   onSwipe: (id: string) => void;
+  /**
+   * Which way the card is swipable
+   */
   swipeDirection: "left" | "right";
 }
 
+/**
+ * Card that has animated swipe action with callback called after the swipe is done
+ */
 export const SwipableCard: React.FC<SwipableCardProps> = ({
   children,
   title,
@@ -115,6 +136,9 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     ),
   );
 
+  /**
+   * Called when user releases the scroll
+   */
   const onScrollEnd = (
     e: ReactNative.NativeSyntheticEvent<ReactNative.NativeScrollEvent>,
   ) => {
@@ -141,12 +165,12 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     let contentOpacity = 1;
     let opacityFactor = 1;
-    // was swiped to left, not taking into account the bounce scrolling over the boundaries
     if (swipeDirection === "left" && contentOffsetX > 0) {
       opacityFactor = (screenWidth - contentOffsetX) / screenWidth;
     } else if (swipeDirection === "right" && contentOffsetX < screenWidth) {
       opacityFactor = contentOffsetX / screenWidth;
     }
+    // Opacityfactor is never quite 1
     if (opacityFactor < 0.99) {
       contentOpacity = contentOpacity * opacityFactor;
     }
@@ -155,6 +179,9 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     });
   };
 
+  /**
+   * Scroll the container from off screen to visible
+   */
   const scrollToView = (animated = false) => {
     if (swiperRef.current) {
       if (swipeDirection === "right") {
@@ -170,6 +197,9 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     }
   };
 
+  /**
+   * Scrolls container out of the view, and calls the onSwipe callback if argument provided
+   */
   const scrollOffView = (animated = false, callOnSwipe = false) => {
     if (swiperRef.current) {
       scrollAnimationRef.current.addListener((animation) => {
@@ -195,6 +225,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     }
   };
 
+  // Sets element height according to the header + container height
   React.useEffect(() => {
     if (isCollapsed) {
       setElementHeight(headerHeight);
@@ -203,8 +234,8 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     }
   }, [isCollapsed, headerHeight, collapsibleContainerHeight]);
 
+  // Scroll the element off screen first, then do animated scroll for nice effect
   React.useLayoutEffect(() => {
-    // Scroll the element off screen first, then do animated scroll for nice effect
     scrollOffView();
     scrollViewTo("view");
   }, [swiperRef, screenWidth, swipeDirection]);
