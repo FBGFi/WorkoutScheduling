@@ -13,6 +13,7 @@ export const Colors = {
 
   /* Background colors */
   primary_background: "rgb(240,250,230)",
+  secondary_background: "rgb(225,235,215)",
 
   /* Unused but cool colors */
   unused: "rgb(229,171,53)",
