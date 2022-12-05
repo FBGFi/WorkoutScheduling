@@ -1,53 +1,25 @@
 import React from "react";
 import ReactNative from "react-native";
+import { SwipableCard } from "./components/Card/SwipableCard";
 import Colors from "./styles/colors";
-import Dimensions from "./styles/dimensions";
-import Fonts from "./styles/fonts";
 
 const App = () => {
+  const [cards, setCards] = React.useState(["1", "2", "3"]);
   return (
     <ReactNative.View
       style={{ backgroundColor: Colors.primary_background, flex: 1 }}>
-      <ReactNative.Text
-        style={{
-          color: Colors.secondary,
-          fontSize: Dimensions.font_large,
-          fontFamily: Fonts.Staatliches,
-        }}>
-        Hi
-      </ReactNative.Text>
-      <ReactNative.Text
-        style={{
-          color: Colors.secondary,
-          fontSize: Dimensions.font_large,
-          fontFamily: Fonts.Titillium,
-        }}>
-        Hi
-      </ReactNative.Text>
-      <ReactNative.Text
-        style={{
-          color: Colors.secondary,
-          fontSize: Dimensions.font_large,
-          fontFamily: Fonts.Titillium_cursive,
-        }}>
-        Hi
-      </ReactNative.Text>
-      <ReactNative.Text
-        style={{
-          color: Colors.secondary,
-          fontSize: Dimensions.font_large,
-          fontFamily: Fonts.Titillium_semibold,
-        }}>
-        Hi
-      </ReactNative.Text>
-      <ReactNative.Text
-        style={{
-          color: Colors.secondary,
-          fontSize: Dimensions.font_large,
-          fontFamily: Fonts.Titillium_bold,
-        }}>
-        Hi
-      </ReactNative.Text>
+      {cards.map((cardId, index) => (
+        <SwipableCard
+          key={cardId}
+          id={cardId}
+          index={index}
+          swipeDirection="right"
+          title={`Card title ${cardId}`}
+          onPress={(id) => console.log(id)}
+          onSwipe={(i) => setCards(cards.filter((id) => id !== i))}>
+          <ReactNative.Text>Testi</ReactNative.Text>
+        </SwipableCard>
+      ))}
     </ReactNative.View>
   );
 };
