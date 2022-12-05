@@ -13,7 +13,7 @@ const App = () => {
         <SwipableCard
           key={cardId}
           id={cardId}
-          showTopBorder={index === 0}
+          index={index}
           swipeDirection="right"
           title={`Card title ${cardId}`}
           onPress={(id) => console.log(id)}

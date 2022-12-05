@@ -80,46 +80,53 @@ const swipableCardStyles = ReactNative.StyleSheet.create({
 interface SwipableCardProps extends React.PropsWithChildren {
   title: string;
   id: string;
+  index?: number;
   onPress?: (id: string) => void;
   onSwipe: (id: string) => void;
   swipeDirection: "left" | "right";
-  showTopBorder?: boolean;
 }
 
 export const SwipableCard: React.FC<SwipableCardProps> = ({
   children,
   title,
   id,
+  index,
   onPress,
   onSwipe,
   swipeDirection,
-  showTopBorder = true,
 }) => {
-  const [elementHeight, setElementHeight] = React.useState(0);
-  const [headerHeight, setHeaderHeight] = React.useState(0);
-  const [collapsibleContainerHeight, setCollapsibleContainerHeight] =
-    React.useState(0);
-  const [isCollapsed, setIsCollapsed] = React.useState(true);
   const screenWidth = ReactNative.Dimensions.get("window").width;
-  const wrapperRef = React.useRef<ReactNative.View | null>(null);
-  const swiperRef = React.useRef<ReactNative.ScrollView | null>(null);
   const offSetMargins = {
     marginLeft: swipeDirection === "right" ? screenWidth : 0,
     marginRight: swipeDirection === "left" ? screenWidth : 0,
   };
 
+  const [elementHeight, setElementHeight] = React.useState(0);
+  const [headerHeight, setHeaderHeight] = React.useState(0);
+  const [collapsibleContainerHeight, setCollapsibleContainerHeight] =
+    React.useState(0);
+  const [isCollapsed, setIsCollapsed] = React.useState(true);
+
+  const wrapperRef = React.useRef<ReactNative.View | null>(null);
+  const swiperRef = React.useRef<ReactNative.ScrollView | null>(null);
+  const scrollAnimationRef = React.useRef(
+    new ReactNative.Animated.Value(
+      swipeDirection === "right" ? 0 : screenWidth,
+    ),
+  );
+
   const onScrollEnd = (
     e: ReactNative.NativeSyntheticEvent<ReactNative.NativeScrollEvent>,
   ) => {
     const xOffset = e.nativeEvent.contentOffset.x;
+    scrollAnimationRef.current.setValue(xOffset);
     const activationPoint =
       screenWidth * (swipeDirection === "left" ? 0.4 : 0.6);
     const isScrolledOffView =
       (swipeDirection === "left" && xOffset > activationPoint) ||
       (swipeDirection === "right" && xOffset < activationPoint);
     if (isScrolledOffView) {
-      scrollOffView(true);
-      setTimeout(() => onSwipe(id), 1);
+      scrollOffView(true, true);
     } else {
       scrollToView(true);
     }
@@ -163,18 +170,21 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     }
   };
 
-  const scrollOffView = (animated = false) => {
+  const scrollOffView = (animated = false, callOnSwipe = false) => {
     if (swiperRef.current) {
-      if (swipeDirection === "left") {
-        swiperRef.current.scrollToEnd({
-          animated,
+      scrollAnimationRef.current.addListener((animation) => {
+        console.log(animation.value);
+        swiperRef.current?.scrollTo({
+          x: animation.value,
+          animated: false,
         });
-      } else {
-        swiperRef.current.scrollTo({
-          x: 0,
-          animated,
-        });
-      }
+      });
+      ReactNative.Animated.timing(scrollAnimationRef.current, {
+        toValue: swipeDirection === "left" ? screenWidth : 0,
+        duration: animated ? 200 : 0,
+        useNativeDriver: true,
+        easing: ReactNative.Easing.ease,
+      }).start(() => callOnSwipe && onSwipe(id));
     }
   };
 
@@ -204,13 +214,14 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
       style={{
         ...swipableCardStyles.outerWrapper,
         height: elementHeight,
+        top: index ? index * -4 : 0,
       }}>
       <ReactNative.View
         ref={wrapperRef}
         style={swipableCardStyles.innerWrapper}>
         <ReactNative.View>
           {/* --- Start of title container --- */}
-          <ReactNative.ScrollView
+          <ReactNative.Animated.ScrollView
             horizontal
             disableIntervalMomentum={true}
             showsHorizontalScrollIndicator={false}
@@ -230,7 +241,6 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
                 style={{
                   ...swipableCardStyles.headerContainer,
                   ...offSetMargins,
-                  borderTopWidth: showTopBorder ? 4 : 0,
                 }}
                 onLayout={(e) => {
                   const { height } = e.nativeEvent.layout;
@@ -247,7 +257,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
                 )}
               </ReactNative.View>
             </ReactNative.TouchableOpacity>
-          </ReactNative.ScrollView>
+          </ReactNative.Animated.ScrollView>
           {/* --- End of title container --- */}
 
           {/* --- Start of collapsible container --- */}
