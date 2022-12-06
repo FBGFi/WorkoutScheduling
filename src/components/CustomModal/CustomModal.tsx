@@ -23,21 +23,20 @@ const customModalStyles = ReactNative.StyleSheet.create({
     ...CommonStyles.title,
     flex: 1,
   },
-  contentContainer: {
-    paddingVertical: Dimensions.whitespace_small,
-    paddingHorizontal: Dimensions.whitespace_medium,
-  },
+  contentContainer: {},
 });
 
 interface CustomModalProps extends React.PropsWithChildren {
   title: string;
   closeModal: () => void;
+  disableSwipe?: boolean;
 }
 
 export const CustomModal: React.FC<CustomModalProps> = ({
   title,
   children,
   closeModal,
+  disableSwipe = false,
 }) => {
   const scrollAnimationRef = React.useRef(
     new ReactNative.Animated.Value(screenWidth),
@@ -95,6 +94,8 @@ export const CustomModal: React.FC<CustomModalProps> = ({
   return (
     <ReactNative.Modal transparent onRequestClose={() => scrollOffView(true)}>
       <ReactNative.Animated.ScrollView
+        scrollEnabled={!disableSwipe}
+        nestedScrollEnabled
         horizontal
         disableIntervalMomentum={true}
         showsHorizontalScrollIndicator={false}

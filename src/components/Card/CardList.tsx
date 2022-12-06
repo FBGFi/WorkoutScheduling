@@ -11,6 +11,7 @@ interface CardListProps {
   removeCard: (id: string) => void;
   renderContent?: (card: CardItem) => React.ReactNode;
   onCardPress?: (id: string) => void;
+  setParentScrollsDisabled?: (disabled: boolean) => void;
 }
 
 /**
@@ -22,6 +23,7 @@ export const CardList: React.FC<CardListProps> = ({
   removeCard,
   renderContent,
   onCardPress,
+  setParentScrollsDisabled,
 }) => {
   const [cancelWasPressed, setCancelWasPressed] = React.useState(false);
 
@@ -38,6 +40,7 @@ export const CardList: React.FC<CardListProps> = ({
           swipeDirection={swipeDirection}
           title={card.title}
           forceCardBackToView={cancelWasPressed}
+          setParentScrollsDisabled={setParentScrollsDisabled}
           onPress={onCardPress}
           onSwipe={(id) =>
             onDeleteItem(

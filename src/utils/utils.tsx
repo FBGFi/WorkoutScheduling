@@ -23,3 +23,8 @@ export const onDeleteItem = (
     ],
   );
 };
+
+/**
+ * Creates an ID from current date (should be unique)
+ */
+export const createUniqueId = () => Date.now().toString();

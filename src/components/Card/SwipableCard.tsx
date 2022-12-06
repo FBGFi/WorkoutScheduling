@@ -106,6 +106,10 @@ interface SwipableCardProps extends React.PropsWithChildren {
    * To trigger bringing card back to view, simply change this parameter
    */
   forceCardBackToView?: any;
+  /**
+   * Set scrolling of other scrollviews to false while touching the card
+   */
+  setParentScrollsDisabled?: (disabled: boolean) => void;
 }
 
 /**
@@ -120,6 +124,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
   onSwipe,
   swipeDirection,
   forceCardBackToView,
+  setParentScrollsDisabled,
 }) => {
   const offSetMargins = {
     marginLeft: swipeDirection === "right" ? screenWidth : 0,
@@ -158,6 +163,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
     } else {
       scrollToView(true);
     }
+    setParentScrollsDisabled && setParentScrollsDisabled(false);
   };
 
   /**
@@ -270,6 +276,9 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
             <ReactNative.TouchableOpacity
               touchSoundDisabled={!onPress}
               activeOpacity={onPress ? 0.7 : 1}
+              onPressIn={() =>
+                setParentScrollsDisabled && setParentScrollsDisabled(true)
+              }
               onPress={() => onPress && onPress(id)}>
               <ReactNative.View
                 style={{
