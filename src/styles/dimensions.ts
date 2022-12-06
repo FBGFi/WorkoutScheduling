@@ -4,8 +4,14 @@ export const fontSizes = {
   font_large: 36,
 };
 
+export const whiteSpaces = {
+  whitespace_vertical: 5,
+  whitespace_horizontal: 10,
+};
+
 export const Dimensions = {
   ...fontSizes,
+  ...whiteSpaces,
 };
 
 export default Dimensions;

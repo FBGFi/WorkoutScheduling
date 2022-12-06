@@ -1,6 +1,7 @@
 import React from "react";
 import ReactNative from "react-native";
 import { SwipableCard } from "./components/Card/SwipableCard";
+import { CustomModal } from "./components/CustomModal/CustomModal";
 import Colors from "./styles/colors";
 import { onDeleteItem } from "./utils/utils";
 
@@ -15,6 +16,9 @@ const App = () => {
   return (
     <ReactNative.View
       style={{ backgroundColor: Colors.primary_background, flex: 1 }}>
+      <CustomModal title="Testi" setModal={(m) => {}}>
+        <ReactNative.Text>Testi</ReactNative.Text>
+      </CustomModal>
       {cards.map((cardId, index) => (
         <SwipableCard
           key={cardId}

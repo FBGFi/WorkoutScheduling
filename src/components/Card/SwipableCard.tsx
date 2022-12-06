@@ -1,8 +1,7 @@
 import React from "react";
 import ReactNative from "react-native";
 import Colors from "../../styles/colors";
-import Dimensions from "../../styles/dimensions";
-import Fonts from "../../styles/fonts";
+import CommonStyles from "../../styles/commonStyles";
 
 const expandButtonStyles = ReactNative.StyleSheet.create({
   wrapper: {
@@ -70,9 +69,7 @@ const swipableCardStyles = ReactNative.StyleSheet.create({
     paddingVertical: 5,
   },
   title: {
-    color: Colors.secondary,
-    fontSize: Dimensions.font_large,
-    fontFamily: Fonts.Staatliches,
+    ...CommonStyles.title,
     flex: 1,
   },
 });
