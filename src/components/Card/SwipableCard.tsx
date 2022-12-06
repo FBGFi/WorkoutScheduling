@@ -1,8 +1,10 @@
 import React from "react";
 import ReactNative from "react-native";
-import Colors from "../../styles/colors";
-import Dimensions from "../../styles/dimensions";
-import Fonts from "../../styles/fonts";
+import Colors from "@styles/colors";
+import CommonStyles from "@styles/commonStyles";
+import Dimensions from "@styles/dimensions";
+
+const screenWidth = ReactNative.Dimensions.get("window").width;
 
 const expandButtonStyles = ReactNative.StyleSheet.create({
   wrapper: {
@@ -47,32 +49,30 @@ const swipableCardStyles = ReactNative.StyleSheet.create({
   },
   innerWrapper: {
     flexDirection: "row",
-    width: ReactNative.Dimensions.get("window").width,
+    width: screenWidth,
     position: "absolute",
   },
   headerContainer: {
     flexDirection: "row",
     backgroundColor: Colors.secondary_background,
-    width: ReactNative.Dimensions.get("window").width,
+    width: screenWidth,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderWidth: 4,
+    borderWidth: Dimensions.border_width,
     borderColor: Colors.secondary,
   },
   collapsibleContainer: {
     backgroundColor: Colors.primary_background,
-    width: ReactNative.Dimensions.get("window").width,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
+    width: screenWidth,
+    borderBottomWidth: Dimensions.border_width,
+    borderLeftWidth: Dimensions.border_width,
+    borderRightWidth: Dimensions.border_width,
     borderColor: Colors.secondary,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
   title: {
-    color: Colors.secondary,
-    fontSize: Dimensions.font_large,
-    fontFamily: Fonts.Staatliches,
+    ...CommonStyles.title,
     flex: 1,
   },
 });
@@ -102,6 +102,10 @@ interface SwipableCardProps extends React.PropsWithChildren {
    * Which way the card is swipable
    */
   swipeDirection: "left" | "right";
+  /**
+   * To trigger bringing card back to view, simply change this parameter
+   */
+  forceCardBackToView?: any;
 }
 
 /**
@@ -115,8 +119,8 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
   onPress,
   onSwipe,
   swipeDirection,
+  forceCardBackToView,
 }) => {
-  const screenWidth = ReactNative.Dimensions.get("window").width;
   const offSetMargins = {
     marginLeft: swipeDirection === "right" ? screenWidth : 0,
     marginRight: swipeDirection === "left" ? screenWidth : 0,
@@ -203,7 +207,6 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
   const scrollOffView = (animated = false, callOnSwipe = false) => {
     if (swiperRef.current) {
       scrollAnimationRef.current.addListener((animation) => {
-        console.log(animation.value);
         swiperRef.current?.scrollTo({
           x: animation.value,
           animated: false,
@@ -238,14 +241,14 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
   React.useLayoutEffect(() => {
     scrollOffView();
     scrollViewTo("view");
-  }, [swiperRef, screenWidth, swipeDirection]);
+  }, [swiperRef, screenWidth, swipeDirection, forceCardBackToView]);
 
   return (
     <ReactNative.View
       style={{
         ...swipableCardStyles.outerWrapper,
         height: elementHeight,
-        top: index ? index * -4 : 0,
+        top: index ? index * -Dimensions.border_width : 0,
       }}>
       <ReactNative.View
         ref={wrapperRef}
