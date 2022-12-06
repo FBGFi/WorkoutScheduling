@@ -102,6 +102,10 @@ interface SwipableCardProps extends React.PropsWithChildren {
    * Which way the card is swipable
    */
   swipeDirection: "left" | "right";
+  /**
+   * To trigger bringing card back to view, simply change this parameter
+   */
+  forceCardBackToView?: any;
 }
 
 /**
@@ -115,6 +119,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
   onPress,
   onSwipe,
   swipeDirection,
+  forceCardBackToView,
 }) => {
   const screenWidth = ReactNative.Dimensions.get("window").width;
   const offSetMargins = {
@@ -238,7 +243,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
   React.useLayoutEffect(() => {
     scrollOffView();
     scrollViewTo("view");
-  }, [swiperRef, screenWidth, swipeDirection]);
+  }, [swiperRef, screenWidth, swipeDirection, forceCardBackToView]);
 
   return (
     <ReactNative.View
