@@ -6,8 +6,8 @@ import ReactNative from "react-native";
 
 const buttonStyles = ReactNative.StyleSheet.create({
   wrapper: {
-    paddingVertical: Dimensions.whitespace_vertical,
-    paddingHorizontal: Dimensions.whitespace_horizontal,
+    paddingVertical: Dimensions.whitespace_small,
+    paddingHorizontal: Dimensions.whitespace_medium,
   },
   text: {
     color: "#FFFFFF",

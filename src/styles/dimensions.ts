@@ -6,8 +6,9 @@ export const fontSizes = {
 };
 
 export const whiteSpaces = {
-  whitespace_vertical: 5,
-  whitespace_horizontal: 10,
+  whitespace_small: 5,
+  whitespace_medium: 10,
+  whitespace_large: 15,
   border_width: 4,
 };
 
