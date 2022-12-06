@@ -63,6 +63,7 @@ export const WorkOutSchedulesView: React.FC<
           onPress={() =>
             setInputModal(
               <InputModal
+                title="Add new workout"
                 inputs={[
                   {
                     id: "title",

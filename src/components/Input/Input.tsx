@@ -7,7 +7,7 @@ import Fonts from "@styles/fonts";
 const inputStyles = ReactNative.StyleSheet.create({
   label: {
     fontSize: Dimensions.font_tiny,
-    paddingLeft: Dimensions.whitespace_horizontal,
+    paddingLeft: Dimensions.whitespace_medium,
     color: Colors.secondary,
     fontFamily: Fonts.Titillium_semibold,
   },
@@ -17,7 +17,7 @@ const inputStyles = ReactNative.StyleSheet.create({
     fontSize: Dimensions.font_small,
     color: Colors.secondary_font,
     fontFamily: Fonts.Titillium_semibold,
-    paddingLeft: Dimensions.whitespace_horizontal,
+    paddingLeft: Dimensions.whitespace_medium,
   },
 });
 

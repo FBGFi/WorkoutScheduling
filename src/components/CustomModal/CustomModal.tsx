@@ -16,16 +16,16 @@ const customModalStyles = ReactNative.StyleSheet.create({
   header: {
     flexDirection: "row",
     backgroundColor: Colors.secondary_background,
-    paddingVertical: Dimensions.whitespace_vertical,
-    paddingHorizontal: Dimensions.whitespace_horizontal,
+    paddingVertical: Dimensions.whitespace_small,
+    paddingHorizontal: Dimensions.whitespace_medium,
   },
   title: {
     ...CommonStyles.title,
     flex: 1,
   },
   contentContainer: {
-    paddingVertical: Dimensions.whitespace_vertical,
-    paddingHorizontal: Dimensions.whitespace_horizontal,
+    paddingVertical: Dimensions.whitespace_small,
+    paddingHorizontal: Dimensions.whitespace_medium,
   },
 });
 
