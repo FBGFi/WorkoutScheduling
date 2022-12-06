@@ -2,14 +2,15 @@ import React from "react";
 import ReactNative from "react-native";
 import Dimensions from "@styles/dimensions";
 import { onDeleteItem } from "@utils/utils";
+import { CardItem } from "@utils/types";
 import { SwipableCard } from "./SwipableCard";
-import { CardItem } from "./types";
 
 interface CardListProps {
   cards: CardItem[];
   swipeDirection: "left" | "right";
   removeCard: (id: string) => void;
   renderContent?: (card: CardItem) => React.ReactNode;
+  onCardPress?: (id: string) => void;
 }
 
 /**
@@ -20,6 +21,7 @@ export const CardList: React.FC<CardListProps> = ({
   swipeDirection,
   removeCard,
   renderContent,
+  onCardPress,
 }) => {
   const [cancelWasPressed, setCancelWasPressed] = React.useState(false);
 
@@ -34,7 +36,7 @@ export const CardList: React.FC<CardListProps> = ({
           swipeDirection={swipeDirection}
           title={card.title}
           forceCardBackToView={cancelWasPressed}
-          onPress={(id) => console.log(id)}
+          onPress={onCardPress}
           onSwipe={(id) =>
             onDeleteItem(
               () => removeCard(id),

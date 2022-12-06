@@ -11,6 +11,8 @@
       "@styles/*": ["./styles/*"],
       "@components/*": ["./components/*"],
       "@assets/*": ["./assets/*"],
+      "@views/*": ["./views/*"],
+      "@store/*": ["./store/*"],
     }
   }
 }

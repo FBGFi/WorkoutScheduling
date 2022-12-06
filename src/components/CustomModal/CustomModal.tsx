@@ -1,8 +1,8 @@
 import React from "react";
 import ReactNative from "react-native";
-import Colors from "../../styles/colors";
-import CommonStyles from "../../styles/commonStyles";
-import Dimensions from "../../styles/dimensions";
+import Colors from "@styles/colors";
+import CommonStyles from "@styles/commonStyles";
+import Dimensions from "@styles/dimensions";
 
 const screenWidth = ReactNative.Dimensions.get("window").width;
 
@@ -31,13 +31,13 @@ const customModalStyles = ReactNative.StyleSheet.create({
 
 interface CustomModalProps extends React.PropsWithChildren {
   title: string;
-  setModal: (modal: null) => void;
+  closeModal: () => void;
 }
 
 export const CustomModal: React.FC<CustomModalProps> = ({
   title,
   children,
-  setModal,
+  closeModal,
 }) => {
   const scrollAnimationRef = React.useRef(
     new ReactNative.Animated.Value(screenWidth),
@@ -89,24 +89,19 @@ export const CustomModal: React.FC<CustomModalProps> = ({
         duration: callOnSwipe ? 200 : 0,
         useNativeDriver: true,
         easing: ReactNative.Easing.ease,
-      }).start(() => callOnSwipe && setModal(null));
+      }).start(() => callOnSwipe && closeModal());
     }
   };
 
-  // Scroll the element to view on render
-  React.useLayoutEffect(() => {
-    scrollToView();
-  }, [swiperRef, screenWidth]);
-
   return (
-    <ReactNative.Modal transparent onRequestClose={() => setModal(null)}>
+    <ReactNative.Modal transparent onRequestClose={() => scrollOffView(true)}>
       <ReactNative.Animated.ScrollView
         horizontal
         disableIntervalMomentum={true}
         showsHorizontalScrollIndicator={false}
         decelerationRate={0.3}
         ref={swiperRef}
-        // onScroll={onScroll}
+        onLayout={() => scrollToView()}
         onScrollEndDrag={onScrollEnd}
         onMomentumScrollEnd={() => {}}
         contentContainerStyle={{
@@ -118,7 +113,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({
             <ReactNative.Text style={customModalStyles.title}>
               {title}
             </ReactNative.Text>
-            <ReactNative.TouchableOpacity onPress={() => setModal(null)}>
+            <ReactNative.TouchableOpacity onPress={() => scrollOffView(true)}>
               <ReactNative.Text style={CommonStyles.title}>X</ReactNative.Text>
             </ReactNative.TouchableOpacity>
           </ReactNative.View>

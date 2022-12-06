@@ -1,8 +1,8 @@
 import React from "react";
 import ReactNative from "react-native";
-import Colors from "../../styles/colors";
-import CommonStyles from "../../styles/commonStyles";
-import Dimensions from "../../styles/dimensions";
+import Colors from "@styles/colors";
+import CommonStyles from "@styles/commonStyles";
+import Dimensions from "@styles/dimensions";
 
 const screenWidth = ReactNative.Dimensions.get("window").width;
 
