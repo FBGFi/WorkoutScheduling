@@ -1,6 +1,8 @@
+import { Button } from "@components/Button/Button";
 import { Input } from "@components/Input/Input";
 import { InputData } from "@components/Input/types";
 import Colors from "@styles/colors";
+import Dimensions from "@styles/dimensions";
 import React from "react";
 import ReactNative from "react-native";
 
@@ -17,6 +19,11 @@ const inputModalStyles = ReactNative.StyleSheet.create({
     marginBottom: "auto",
     backgroundColor: Colors.primary_background,
     marginVertical: 30,
+    paddingVertical: Dimensions.whitespace_vertical,
+    paddingHorizontal: Dimensions.whitespace_horizontal,
+  },
+  inputWrapper: {
+    marginBottom: Dimensions.whitespace_horizontal,
   },
 });
 
@@ -55,19 +62,39 @@ export function InputModal<InputValue extends InputData>({
     <ReactNative.Modal transparent onRequestClose={closeModal}>
       <ReactNative.View style={inputModalStyles.wrapper}>
         <ReactNative.View style={inputModalStyles.formContainer}>
+          {/* --- Inputs start --- */}
           <ReactNative.ScrollView style={{ maxHeight: screenHeight - 300 }}>
             {inputs.map((input, index) => (
-              <Input
+              <ReactNative.View
                 key={input.id + index}
-                label={input.label}
-                value={input.value}
-                onChange={(value) => onChange(input, value)}
-                autoFocus={input.autoFocus}
-              />
+                style={inputModalStyles.inputWrapper}>
+                <Input
+                  label={input.label}
+                  value={input.value}
+                  onChange={(value) => onChange(input, value)}
+                  autoFocus={input.autoFocus}
+                />
+              </ReactNative.View>
             ))}
           </ReactNative.ScrollView>
-          <ReactNative.Button title="Close" onPress={closeModal} />
-          <ReactNative.Button title="Add" onPress={onConfirm} />
+          {/* --- Inputs end --- */}
+
+          {/* --- Buttons start --- */}
+          <ReactNative.View style={{ flexDirection: "row" }}>
+            <Button
+              title="Close"
+              style={{ flex: 1 }}
+              onPress={closeModal}
+              type="cancel"
+            />
+            <Button
+              title="Add"
+              style={{ flex: 1 }}
+              onPress={onConfirm}
+              type="confirm"
+            />
+          </ReactNative.View>
+          {/* --- Buttons end --- */}
         </ReactNative.View>
       </ReactNative.View>
     </ReactNative.Modal>
