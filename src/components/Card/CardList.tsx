@@ -27,7 +27,9 @@ export const CardList: React.FC<CardListProps> = ({
 
   return (
     <ReactNative.View
-      style={{ marginBottom: -Dimensions.border_width * (cards.length - 1) }}>
+      style={{
+        marginBottom: -Dimensions.border_width * ((cards.length || 1) - 1),
+      }}>
       {cards.map((card, index) => (
         <SwipableCard
           key={card.id}

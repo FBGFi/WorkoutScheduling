@@ -54,7 +54,6 @@ export const CustomModal: React.FC<CustomModalProps> = ({
     scrollAnimationRef.current.setValue(xOffset);
     const activationPoint = screenWidth * 0.4;
     const isScrolledOffView = xOffset < activationPoint;
-    console.log(xOffset);
     if (isScrolledOffView) {
       scrollOffView(true);
     } else {
