@@ -2,6 +2,7 @@ import React from "react";
 import ReactNative from "react-native";
 import Colors from "../../styles/colors";
 import CommonStyles from "../../styles/commonStyles";
+import Dimensions from "../../styles/dimensions";
 
 const screenWidth = ReactNative.Dimensions.get("window").width;
 
@@ -57,15 +58,15 @@ const swipableCardStyles = ReactNative.StyleSheet.create({
     width: screenWidth,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderWidth: 4,
+    borderWidth: Dimensions.border_width,
     borderColor: Colors.secondary,
   },
   collapsibleContainer: {
     backgroundColor: Colors.primary_background,
     width: screenWidth,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
+    borderBottomWidth: Dimensions.border_width,
+    borderLeftWidth: Dimensions.border_width,
+    borderRightWidth: Dimensions.border_width,
     borderColor: Colors.secondary,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -247,7 +248,7 @@ export const SwipableCard: React.FC<SwipableCardProps> = ({
       style={{
         ...swipableCardStyles.outerWrapper,
         height: elementHeight,
-        top: index ? index * -4 : 0,
+        top: index ? index * -Dimensions.border_width : 0,
       }}>
       <ReactNative.View
         ref={wrapperRef}
