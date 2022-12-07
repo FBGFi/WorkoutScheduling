@@ -3,11 +3,11 @@ export interface CardItem {
   title: string;
 }
 
-export interface Excercise extends CardItem {
+export interface Exercise extends CardItem {
   reps: number;
   sets: number;
 }
 
 export interface Workout extends CardItem {
-  exercises: Excercise[];
+  exercises: Exercise[];
 }

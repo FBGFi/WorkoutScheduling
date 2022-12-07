@@ -41,6 +41,7 @@ export function Input<ValueType extends StringifiableObject>({
   autoFocus,
 }: InputProps<ValueType>): JSX.Element {
   const [inputValue, setInputValue] = React.useState(value.toString());
+  const inputRef = React.useRef<ReactNative.TextInput | null>(null);
 
   const getKeyBoardType = (): ReactNative.KeyboardTypeOptions => {
     switch (typeof value) {
@@ -73,6 +74,7 @@ export function Input<ValueType extends StringifiableObject>({
     <ReactNative.View>
       <ReactNative.Text style={inputStyles.label}>{label}</ReactNative.Text>
       <ReactNative.TextInput
+        ref={inputRef}
         autoFocus={autoFocus}
         value={inputValue.toString()}
         onChange={(e) => onInputChange(e.nativeEvent.text)}

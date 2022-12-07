@@ -1,4 +1,4 @@
-import { Workout } from "@utils/types";
+import { Exercise, Workout } from "@utils/types";
 import { createUniqueId } from "@utils/utils";
 import React from "react";
 
@@ -32,54 +32,70 @@ export const useStore = () => {
   const { state, dispatch } = React.useContext(StoreContext);
 
   const addWorkout = (title: string) => {
+    let addedWorkout: Workout = { id: createUniqueId(), title, exercises: [] };
     dispatch((state) => ({
       ...state,
-      workOuts: [
-        ...state.workOuts,
-        { id: createUniqueId(), title, exercises: [] },
-      ],
+      workOuts: [...state.workOuts, addedWorkout],
     }));
+    return addedWorkout;
   };
 
   const removeWorkout = (id: string) => {
+    let removedWorkout = state.workOuts.find((workOut) => workOut.id === id);
     dispatch((state) => ({
       ...state,
       workOuts: state.workOuts.filter((workOut) => id !== workOut.id),
     }));
+    return removedWorkout;
   };
 
-  const addExercise = (workOutId: string, title: string) => {
+  const addExercise = (
+    workOutId: string,
+    title: string,
+    reps: number,
+    sets: number,
+  ) => {
+    let addedExercise: Exercise | undefined;
+    const workOuts = state.workOuts.map((workOut) => {
+      if (workOutId === workOut.id) {
+        addedExercise = {
+          id: createUniqueId(),
+          title,
+          reps,
+          sets,
+        };
+        workOut.exercises.push(addedExercise);
+      }
+      return workOut;
+    });
     dispatch((state) => ({
       ...state,
-      workOuts: state.workOuts.map((workOut) => {
-        if (workOutId === workOut.id) {
-          workOut.exercises.push({
-            id: createUniqueId(),
-            title,
-            reps: 0,
-            sets: 0,
-          });
-        }
-        return workOut;
-      }),
+      workOuts,
     }));
+    return addedExercise;
   };
 
   const removeExercise = (workOutId: string, exerciseId: string) => {
+    let removedExercise: Exercise | undefined;
+    const workOuts = state.workOuts.map((workOut) => {
+      if (workOutId === workOut.id) {
+        removedExercise = workOut.exercises.find(
+          (exercise) => exercise.id === exerciseId,
+        );
+        return {
+          ...workOut,
+          exercises: workOut.exercises.filter(
+            (exercise) => exercise.id !== exerciseId,
+          ),
+        };
+      }
+      return workOut;
+    });
     dispatch((state) => ({
       ...state,
-      workOuts: state.workOuts.map((workOut) => {
-        if (workOutId === workOut.id) {
-          return {
-            ...workOut,
-            exercises: workOut.exercises.filter(
-              (exercise) => exercise.id !== exerciseId,
-            ),
-          };
-        }
-        return workOut;
-      }),
+      workOuts,
     }));
+    return removedExercise;
   };
 
   return {
