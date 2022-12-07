@@ -28,9 +28,10 @@ export const CardList: React.FC<CardListProps> = ({
   const [cancelWasPressed, setCancelWasPressed] = React.useState(false);
 
   return (
-    <ReactNative.View
+    <ReactNative.ScrollView
       style={{
         marginBottom: -Dimensions.border_width * ((cards.length || 1) - 1),
+        flex: 1,
       }}>
       {cards.map((card, index) => (
         <SwipableCard
@@ -51,6 +52,6 @@ export const CardList: React.FC<CardListProps> = ({
           {renderContent && renderContent(card)}
         </SwipableCard>
       ))}
-    </ReactNative.View>
+    </ReactNative.ScrollView>
   );
 };

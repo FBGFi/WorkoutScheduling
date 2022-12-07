@@ -13,17 +13,13 @@ const customModalStyles = ReactNative.StyleSheet.create({
     width: screenWidth,
     marginLeft: screenWidth,
   },
-  header: {
-    flexDirection: "row",
-    backgroundColor: Colors.secondary_background,
-    paddingVertical: Dimensions.whitespace_small,
-    paddingHorizontal: Dimensions.whitespace_medium,
-  },
   title: {
     ...CommonStyles.title,
     flex: 1,
   },
-  contentContainer: {},
+  contentContainer: {
+    flex: 1,
+  },
 });
 
 interface CustomModalProps extends React.PropsWithChildren {
@@ -104,12 +100,13 @@ export const CustomModal: React.FC<CustomModalProps> = ({
         onLayout={() => scrollToView()}
         onScrollEndDrag={onScrollEnd}
         onMomentumScrollEnd={() => {}}
+        style={{ flex: 1 }}
         contentContainerStyle={{
           width: screenWidth * 2,
         }}>
         <ReactNative.View style={customModalStyles.wrapper}>
           {/* --- Header start --- */}
-          <ReactNative.View style={customModalStyles.header}>
+          <ReactNative.View style={CommonStyles.header}>
             <ReactNative.Text style={customModalStyles.title}>
               {title}
             </ReactNative.Text>
@@ -118,7 +115,6 @@ export const CustomModal: React.FC<CustomModalProps> = ({
             </ReactNative.TouchableOpacity>
           </ReactNative.View>
           {/* --- Header end --- */}
-
           {/* --- Container start --- */}
           <ReactNative.View style={customModalStyles.contentContainer}>
             {children}

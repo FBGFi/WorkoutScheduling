@@ -3,10 +3,10 @@ import ReactNative from "react-native";
 import { CardList } from "@components/Card/CardList";
 import { useStore } from "@store/store";
 import { CustomModal } from "@components/CustomModal/CustomModal";
-import { Workout } from "@utils/types";
 import { InputModal } from "@components/CustomModal/InputModal";
 import { InputData } from "@components/Input/types";
 import { Button } from "@components/Button/Button";
+import CommonStyles from "@styles/commonStyles";
 
 interface WorkoutInput extends InputData {
   value: string;
@@ -80,6 +80,12 @@ const WorkOutScheduleView: React.FC<WorkOutScheduleViewProps> = ({
   );
 };
 
+const workOutSchedulesViewStyles = ReactNative.StyleSheet.create({
+  title: {
+    ...CommonStyles.title,
+  },
+});
+
 interface WorkOutSchedulesViewProps {}
 
 export const WorkOutSchedulesView: React.FC<
@@ -105,10 +111,15 @@ export const WorkOutSchedulesView: React.FC<
   };
 
   return (
-    <ReactNative.View>
+    <ReactNative.View style={{ flex: 1 }}>
       <>
         {inputModal}
         {workoutModal}
+        <ReactNative.View style={CommonStyles.header}>
+          <ReactNative.Text style={workOutSchedulesViewStyles.title}>
+            Workouts
+          </ReactNative.Text>
+        </ReactNative.View>
         <CardList
           cards={state.workOuts}
           swipeDirection="right"
